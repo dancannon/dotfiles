@@ -1,0 +1,8 @@
+{
+    "email": "dancdoit@gmail.com",
+    "product_key": "acc7a1d951a7a4efca7aaf8aaa7ae0bd",
+    "git_executables": {
+        "git": ["/usr/local/bin/git"],
+        "git_flow": ["/usr/local/bin/git", "flow"],
+    }
+}

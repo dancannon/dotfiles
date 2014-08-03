@@ -1,0 +1,6 @@
+Bundle 'chriskempson/base16-vim'
+Bundle 'fatih/vim-go'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'SirVer/ultisnips'
+" Bundle 'ervandew/supertab'
+" Bundle 'honza/vim-snippets'

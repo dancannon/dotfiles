@@ -1,76 +1,90 @@
-# modify the prompt to contain git branch name if applicable
-git_prompt_info() {
-  ref=$(git symbolic-ref HEAD 2> /dev/null)
-  if [[ -n $ref ]]; then
-    echo " %{$fg_bold[green]%}${ref#refs/heads/}%{$reset_color%}"
-  fi
-}
-setopt promptsubst
-export PS1='${SSH_CONNECTION+"%{$fg_bold[green]%}%n@%m:"}%{$fg_bold[blue]%}%c%{$reset_color%}$(git_prompt_info) %# '
+# Shell configuration
+COMPLETION_WAITING_DOTS="true"
+unsetopt correct
 
-# load our own completion functions
-fpath=(~/.zsh/completion $fpath)
+source $HOME/src/github.com/zsh-users/antigen/antigen.zsh
 
-# completion
-autoload -U compinit
-compinit
+# Load the oh-my-zsh's library.
+antigen use oh-my-zsh
 
-# load custom executable functions
-for function in ~/.zsh/functions/*; do
-  source $function
-done
+# Bundles from the default repo (robbyrussell's oh-my-zsh).
+antigen bundle git
+antigen bundle brew
+antigen bundle gem
+antigen bundle git
+antigen bundle git-flow-avh
+antigen bundle gitignore
+antigen bundle osx
+antigen bundle sublime
+antigen bundle golang
+antigen bundle autojump
+antigen bundle docker
+antigen bundle vagrant
+antigen bundle vagrant
+antigen bundle command-not-found
 
-# makes color constants available
-autoload -U colors
-colors
+# Syntax highlighting bundle.
+antigen bundle zsh-users/zsh-history-substring-search
+antigen bundle zsh-users/zsh-syntax-highlighting
 
-# enable colored output from ls, etc
-export CLICOLOR=1
+# Load the theme.
+antigen theme "agnoster"
 
-# history settings
-setopt hist_ignore_all_dups inc_append_history
-HISTFILE=~/.zhistory
-HISTSIZE=4096
-SAVEHIST=4096
+# Tell antigen that you're done.
+antigen apply
 
-# awesome cd movements from zshkit
-setopt autocd autopushd pushdminus pushdsilent pushdtohome cdablevars
-DIRSTACKSIZE=5
-
-# Enable extended globbing
-setopt extendedglob
-
-# Allow [ or ] whereever you want
-unsetopt nomatch
-
-# vi mode
-bindkey -v
-bindkey "^F" vi-cmd-mode
-bindkey jj vi-cmd-mode
-
-# handy keybindings
-bindkey "^A" beginning-of-line
-bindkey "^E" end-of-line
-bindkey "^R" history-incremental-search-backward
-bindkey "^P" history-search-backward
-bindkey "^Y" accept-and-hold
-bindkey "^N" insert-last-word
-bindkey -s "^T" "^[Isudo ^[A" # "t" for "toughguy"
-
-# use vim as the visual editor
+# misc settings
 export VISUAL=vim
 export EDITOR=$VISUAL
-
-# load rbenv if available
-if which rbenv &>/dev/null ; then
-  eval "$(rbenv init - --no-rehash)"
-fi
+export DEFAULT_USER="dancannon"
+export DOCKER_HOST=tcp://192.168.59.103:2375
 
 # load thoughtbot/dotfiles scripts
 export PATH="$HOME/.bin:$PATH"
+export PATH="$HOME/bin:$PATH"
 
-# mkdir .git/safe in the root of repositories you trust
-export PATH=".git/safe/../../bin:$PATH"
+# Go specific config
+export GOPATH=$HOME
+
+# Improve ZSH history complete
+zmodload zsh/terminfo
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
+
+# misc completions
+source /Library/Ruby/Gems/2.0.0/gems/tmuxinator-0.6.8/completion/tmuxinator.zsh
+
+# OS-specific configuration
+case $(uname) in
+  ('Darwin')        # OSX
+
+    # Add up Homebrew's Python binary directory to the path
+    export PATH=/usr/local/share/python:$PATH
+
+    # Give precedence to user/local/bin because that's where Homebrew installs their stuff
+    export PATH=/usr/local/sbin:$PATH
+    export PATH=/usr/local/bin:$PATH
+
+    # Add homebrew commandline completion file
+    completion_file="$(brew --prefix)/Library/Contributions/brew_bash_completion.zsh"
+    if [ -f $completion_file ]; then
+      source $completion_file
+    fi
+
+  ;;
+esac
+
+fancy-ctrl-z () {
+  if [[ $#BUFFER -eq 0 ]]; then
+    BUFFER="fg"
+    zle accept-line
+  else
+    zle push-input
+    zle clear-screen
+  fi
+}
+zle -N fancy-ctrl-z
+bindkey '^Z' fancy-ctrl-z
 
 # aliases
 [[ -f ~/.aliases ]] && source ~/.aliases

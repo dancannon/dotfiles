@@ -1,5 +1,5 @@
 [push]
-  default = current
+	default = simple
 [color]
   ui = auto
 [alias]
@@ -15,7 +15,7 @@
   st = status
   up = !git fetch origin && git rebase origin/master
 [core]
-  excludesfile = ~/.gitignore
+	excludesfile = /Users/dancannon/.gitignore
   autocrlf = input
 [merge]
   ff = only
@@ -25,3 +25,12 @@
   template = ~/.gitmessage
 [fetch]
   prune = true
+[user]
+	name = Daniel Cannon
+	email = daniel@danielcannon.co.uk
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /opt/homebrew-cask/Caskroom/sourcetree/1.9.4.1/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true

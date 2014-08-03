@@ -1,0 +1,8 @@
+[
+    { "keys": ["ctrl+0"], "command": "reset_font_size" },
+    { "keys": ["ctrl+v"], "command": "paste_and_indent" },
+    { "keys": ["ctrl+shift+v"], "command": "paste" },
+    { "keys": ["ctrl+shift+r"],  "command": "goto_symbol_in_project" },
+    { "keys": ["ctrl+]"], "command": "next_view" },
+    { "keys": ["ctrl+["], "command": "prev_view" },
+]

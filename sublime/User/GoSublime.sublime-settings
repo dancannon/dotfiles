@@ -1,0 +1,7 @@
+{
+    "env": {
+        "GOROOT": "/Users/daniel/.gvm/gos/tip",
+        "GOPATH": "/Users/daniel/.gvm/pkgsets/tip/global:/Users/daniel/go"
+    },
+    // "fmt_cmd": ["goimports"]
+}
